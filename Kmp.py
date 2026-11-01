@@ -18,7 +18,7 @@ def tabla_lps(patron):
     return lps
 
 
-def kmp(texto, patron):
+def kmp(texto, patron, traza=False):
     n, m = len(texto), len(patron)
     lps = tabla_lps(patron)
     posiciones = []
@@ -26,6 +26,9 @@ def kmp(texto, patron):
     i = j = 0          # i recorre el texto, j el patrón
     while i < n:
         comparaciones += 1
+        if traza:
+            print(f"i={i:2d} j={j:2d}  texto[i]={texto[i]}  patron[j]={patron[j]}  "
+                f"{'coinciden' if texto[i] == patron[j] else 'FALLO'}")
         if texto[i] == patron[j]:
             i += 1
             j += 1
@@ -45,3 +48,5 @@ if __name__ == "__main__":
     print(tabla_lps("ABABCABAB"))
     print(kmp("ABABDABACDABABCABAB", "ABABCABAB"))
     print(kmp("AAAAA", "AA"))
+    print("\n--- TRAZA KMP ---")
+    kmp("ABABDABACDABABCABAB", "ABABCABAB", traza=True)

@@ -5,7 +5,7 @@ def tabla_mal_caracter(patron):
     return ultima
 
 
-def boyer_moore(texto, patron):
+def boyer_moore(texto, patron, traza=False):
     n, m = len(texto), len(patron)
     ultima = tabla_mal_caracter(patron)
     posiciones = []
@@ -19,13 +19,18 @@ def boyer_moore(texto, patron):
                 break
             j -= 1
         if j < 0:                       # coincidió completo
+            if traza:
+                print(f"s={s:2d} coincidencia completa")
             posiciones.append(s)
             if s + m < n:
                 s += m - ultima.get(texto[s + m], -1)
             else:
                 s += 1
         else:
-            s += max(1, j - ultima.get(texto[s + j], -1))
+            salto = max(1, j - ultima.get(texto[s + j], -1))
+            if traza:
+                print(f"s={s:2d} falla en j={j}: texto='{texto[s + j]}' patron='{patron[j]}'  → salto {salto}")
+            s += salto
     return posiciones, comparaciones
 
 
@@ -33,3 +38,5 @@ if __name__ == "__main__":
     print(tabla_mal_caracter("ABABCABAB"))
     print(boyer_moore("ABABDABACDABABCABAB", "ABABCABAB"))
     print(boyer_moore("AAAAA", "AA"))
+    print("\n--- TRAZA BOYER-MOORE ---")
+    boyer_moore("ABABDABACDABABCABAB", "ABABCABAB", traza=True)

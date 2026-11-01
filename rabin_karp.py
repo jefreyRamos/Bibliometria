@@ -1,6 +1,6 @@
 BASE, Q = 256, 101          # base (tamaño del alfabeto) y un número primo
 
-def rabin_karp(texto, patron):
+def rabin_karp(texto, patron, traza=False):
     n, m = len(texto), len(patron)
     h = 1
     for _ in range(m - 1):
@@ -11,6 +11,9 @@ def rabin_karp(texto, patron):
         ht = (BASE * ht + ord(texto[k])) % Q
     posiciones, comparaciones, colisiones = [], 0, 0
     for s in range(n - m + 1):
+        if traza:
+            print(f"s={s:2d} ventana='{texto[s:s + m]}' hp={hp:3d} ht={ht:3d}"
+                f"{'  ← hashes iguales' if hp == ht else ''}")
         if hp == ht:                        # posible coincidencia: verificar letra a letra
             k = 0
             while k < m:
@@ -30,3 +33,5 @@ def rabin_karp(texto, patron):
 if __name__ == "__main__":
     print(rabin_karp("ABABDABACDABABCABAB", "ABABCABAB"))
     print(rabin_karp("AAAAA", "AA"))
+    print("\n--- TRAZA RABIN-KARP ---")
+    rabin_karp("ABABDABACDABABCABAB", "ABABCABAB", traza=True)

@@ -1,0 +1,44 @@
+=== PASO 0: PREPROCESAMIENTO ===
+A: 186 palabras -> 103 tokens. Primeros 12: ['since', 'artificial', 'intelligence', 'ai', 'finding', 'way', 'areas', 'everyday', 'life', 'improving', 'ai', 'skills']
+B: 132 palabras -> 79 tokens. Primeros 12: ['applications', 'artificial', 'intelligence', 'education', 'aied', 'emerging', 'new', 'researchers', 'practitioners', 'alike', 'reviews', 'relevant']
+
+=== 1. JACCARD ===
+|A| = 82  |B| = 61  |A∩B| = 13  |A∪B| = 82 + 61 - 13 = 130
+Palabras en común: ['ai', 'artificial', 'content', 'current', 'education', 'future', 'identifying', 'intelligence', 'literature', 'relevant', 'research', 'results', 'review']
+J = 13 / 130 = 0.1000
+
+=== 2. TF-IDF + COSENO ===
+Palabras que más aportan al producto punto:
+  identifying     idf=2.303  A=0.0224  B=0.0291  aporte=0.000652
+  content         idf=1.204  A=0.0234  B=0.0152  aporte=0.000356
+  results         idf=0.916  A=0.0178  B=0.0116  aporte=0.000206
+  literature      idf=0.598  A=0.0116  B=0.0151  aporte=0.000176
+  relevant        idf=1.050  A=0.0102  B=0.0133  aporte=0.000135
+A·B = 0.001782  ||A|| = 0.2317  ||B|| = 0.2184
+cos = 0.001782 / (0.2317 x 0.2184) = 0.0352
+
+=== 3. LEVENSHTEIN (por tokens) ===
+Tabla de 104 x 80 = 8320 celdas
+Distancia = 97  ->  similitud = 1 - 97/103 = 0.0583
+
+=== 4. NEEDLEMAN-WUNSCH ===
+Puntaje = -90  longitud del alineamiento = 106
+Primeras 12 posiciones del alineamiento:
+  since           | applications    
+  artificial      | artificial      <- coinciden
+  intelligence    | intelligence    <- coinciden
+  ai              | -               
+  finding         | -               
+  way             | -               
+  areas           | -               
+  everyday        | -               
+  life            | -               
+  improving       | education       
+  ai              | aied            
+  skills          | emerging        
+Tokens que quedaron alineados: ['artificial', 'intelligence', 'relevant', 'ai', 'review', 'content', 'results', 'research']
+Identidad = 8 / 106 = 0.0755
+
+=== 5 y 6. EMBEDDINGS (de matrices.json) ===
+Word2Vec (promedio de vectores de 100 dim) = 0.8307
+Sentence-BERT (vector de 384 dim)          = 0.5898

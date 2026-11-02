@@ -38,12 +38,16 @@ if pagina == "Corpus":
 
 elif pagina == "R1 · Similitud":
     st.header("R1 · Similitud textual entre abstracts")
-    c1, c2 = st.columns(2)
-    a = c1.selectbox("Artículo A", range(N), format_func=lambda k: nombres[k])
-    b = c2.selectbox("Artículo B", range(N), index=1, format_func=lambda k: nombres[k])
-    st.subheader("Similitud según los 6 métodos")
-    for col, (nombre, clave) in zip(st.columns(6), METODOS.items()):
-        col.metric(nombre, f"{matrices[clave][a][b]:.3f}")
+    elegidos = st.multiselect("Elige dos o más artículos", range(N), default=[0, 1],
+                              format_func=lambda k: nombres[k])
+    if len(elegidos) < 2:
+        st.warning("Elige al menos dos artículos.")
+    else:
+        st.subheader("Similitud por pares según los 6 métodos")
+        pares = [{"Par": f"{a + 1} - {b + 1}",
+                  **{nombre: round(matrices[clave][a][b], 4) for nombre, clave in METODOS.items()}}
+                 for x, a in enumerate(elegidos) for b in elegidos[x + 1:]]
+        st.dataframe(pares, width="stretch", hide_index=True)
     st.subheader("Matriz de similitud 20×20")
     metodo = st.selectbox("Método", list(METODOS), index=5)
     fig, ax = plt.subplots(figsize=(7, 6))

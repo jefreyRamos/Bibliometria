@@ -25,9 +25,9 @@ METODOS = {"Jaccard": "jaccard", "Coseno TF-IDF": "tfidf", "Levenshtein": "leven
         "Needleman-Wunsch": "needleman", "Word2Vec": "word2vec", "Sentence-BERT": "sbert"}
 BUSQUEDA = {"KMP": kmp, "Boyer-Moore": boyer_moore, "Rabin-Karp": rabin_karp}
 
-st.sidebar.title("Bibliometría")
-st.sidebar.caption("Análisis de Algoritmos 2026-2 · Universidad del Quindío")
-pagina = st.sidebar.radio("Sección", ["Corpus", "R1 · Similitud", "R2 · Clustering", "R3 · Búsqueda de patrones"])
+st.title("Bibliometría")
+st.caption("Análisis de Algoritmos 2026-2 · Universidad del Quindío")
+pagina = st.radio("Sección", ["Corpus", "R1 · Similitud", "R2 · Clustering", "R3 · Búsqueda de patrones"], horizontal=True)
 
 if pagina == "Corpus":
     st.header("Corpus: 20 artículos sobre IA en educación")

@@ -50,3 +50,7 @@ Patrón de 36 caracteres; medianas de 7 ejecuciones. El tamaño mayor es repetic
 | 226144 | Rabin-Karp | 0.013700 | 56.432600 |
 
 En esta muestra Boyer–Moore por carácter malo tardó menos en buscar este patrón; esto no cambia su peor caso O(nm). La preparación no depende de n: sus fluctuaciones son ruido de medición. RK hace actualizaciones modulares y verificaciones por colisiones; menos comparaciones de caracteres no implica menor tiempo.
+
+## Corrección del arranque local
+
+Se añadió `.streamlit/config.toml` con `global.developmentMode=false`: la instalación en `.deps` hacía que Streamlit activara modo de desarrollo y esperara la interfaz en el puerto 3000. Tras reiniciar el servidor se verificó HTTP 200 en `/` con el HTML de Streamlit y HTTP 200 `ok` en `/_stcore/health` del puerto 8501. Esta verificación es local; el despliegue público continúa pendiente.

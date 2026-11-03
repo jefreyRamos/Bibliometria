@@ -1,4 +1,4 @@
-def tabla_levenshtein(a, b):
+def levenshtein(a, b):
     n, m = len(a), len(b)
     # tabla (n+1) x (m+1) llena de ceros
     D = [[0] * (m + 1) for _ in range(n + 1)] # se crea una matriz de tamaño (n+1) x (m+1) para almacenar las distancias de Levenshtein entre los prefijos de las cadenas a y b. Cada celda D[i][j] representa la distancia de Levenshtein entre los primeros i caracteres de a y los primeros j caracteres de b.
@@ -16,11 +16,7 @@ def tabla_levenshtein(a, b):
                 D[i][j-1] + 1,        # insertar
                 D[i-1][j-1] + costo)   # sustituir
             
-    return D
-
-
-def levenshtein(a, b):
-    return tabla_levenshtein(a, b)[-1][-1]
+    return D[n][m]
 
 
 def similitud_levenshtein(a, b):

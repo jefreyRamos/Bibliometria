@@ -19,13 +19,8 @@ def tabla_lps(patron):
 
 
 def kmp(texto, patron, traza=False):
-    return buscar_preparado(texto, patron, tabla_lps(patron), traza)
-
-
-def buscar_preparado(texto, patron, lps, traza=False):
     n, m = len(texto), len(patron)
-    if m == 0 or m > n:
-        return [], 0
+    lps = tabla_lps(patron)
     posiciones = []
     comparaciones = 0
     i = j = 0          # i recorre el texto, j el patrón

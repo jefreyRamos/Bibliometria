@@ -5,8 +5,8 @@ from tfidf_coseno import calcular_idf, vector_tfidf, coseno
 from levenshtein import levenshtein, similitud_levenshtein
 from needleman_wusch import needleman_wunsch, traceback, similitud_nw
 
-from datos_proyecto import cargar_resultados
-corpus, M = cargar_resultados()
+with open("corpus.json", encoding="utf-8") as f:
+    corpus = json.load(f)
 A, B = corpus[0], corpus[1]
 ta, tb = preprocesar(A["abstract"]), preprocesar(B["abstract"])
 todos = [preprocesar(d["abstract"]) for d in corpus]
@@ -27,11 +27,10 @@ print(f"J = {inter} / {union} = {jaccard_similarity(ta, tb):.4f}")
 print("\n=== 2. TF-IDF + COSENO ===")
 idf = calcular_idf(todos)
 va, vb = vector_tfidf(ta, idf), vector_tfidf(tb, idf)
-aportes = [(va[p] * vb[p], p) for p in sorted(va) if p in vb]
-print("Ejemplo de términos compartidos en orden alfabético (sin ranking):")
+aportes = sorted([(va[p] * vb[p], p) for p in va if p in vb], reverse=True)
+print("Palabras que más aportan al producto punto:")
 for ap, p in aportes[:5]:
-    print(f"  {p:15s} idf={idf[p]:.3f} A={va[p]:.4f} B={vb[p]:.4f} aporte={ap:.6f}")
-
+    print(f"  {p:15s} idf={idf[p]:.3f}  A={va[p]:.4f}  B={vb[p]:.4f}  aporte={ap:.6f}")
 prod = sum(ap for ap, _ in aportes)
 na = math.sqrt(sum(v * v for v in va.values()))
 nb = math.sqrt(sum(v * v for v in vb.values()))
@@ -55,5 +54,7 @@ print("Tokens que quedaron alineados:", coinc)
 print(f"Identidad = {len(coinc)} / {len(al_a)} = {similitud_nw(ta, tb):.4f}")
 
 print("\n=== 5 y 6. EMBEDDINGS (de matrices.json) ===")
+with open("matrices.json", encoding="utf-8") as f:
+    M = json.load(f)
 print(f"Word2Vec (promedio de vectores de 100 dim) = {M['word2vec'][0][1]:.4f}")
 print(f"Sentence-BERT (vector de 384 dim)          = {M['sbert'][0][1]:.4f}")

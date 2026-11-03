@@ -8,14 +8,14 @@ Palabras en común: ['ai', 'artificial', 'content', 'current', 'education', 'fut
 J = 13 / 130 = 0.1000
 
 === 2. TF-IDF + COSENO ===
-Ejemplo de términos compartidos en orden alfabético (sin ranking):
-  ai              idf=0.105 A=0.0072 B=0.0027 aporte=0.000019
-  artificial      idf=0.000 A=0.0000 B=0.0000 aporte=0.000000
-  content         idf=1.204 A=0.0234 B=0.0152 aporte=0.000356
-  current         idf=0.916 A=0.0089 B=0.0116 aporte=0.000103
-  education       idf=0.105 A=0.0031 B=0.0013 aporte=0.000004
-A·B = 0.001750  ||A|| = 0.2317  ||B|| = 0.2181
-cos = 0.001750 / (0.2317 x 0.2181) = 0.0346
+Palabras que más aportan al producto punto:
+  identifying     idf=2.303  A=0.0224  B=0.0291  aporte=0.000652
+  content         idf=1.204  A=0.0234  B=0.0152  aporte=0.000356
+  results         idf=0.916  A=0.0178  B=0.0116  aporte=0.000206
+  literature      idf=0.598  A=0.0116  B=0.0151  aporte=0.000176
+  relevant        idf=1.050  A=0.0102  B=0.0133  aporte=0.000135
+A·B = 0.001782  ||A|| = 0.2317  ||B|| = 0.2184
+cos = 0.001782 / (0.2317 x 0.2184) = 0.0352
 
 === 3. LEVENSHTEIN (por tokens) ===
 Tabla de 104 x 80 = 8320 celdas
@@ -40,5 +40,5 @@ Tokens que quedaron alineados: ['artificial', 'intelligence', 'relevant', 'ai', 
 Identidad = 8 / 106 = 0.0755
 
 === 5 y 6. EMBEDDINGS (de matrices.json) ===
-Word2Vec (promedio de vectores de 100 dim) = 0.8263
+Word2Vec (promedio de vectores de 100 dim) = 0.8307
 Sentence-BERT (vector de 384 dim)          = 0.5898

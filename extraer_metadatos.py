@@ -1,18 +1,28 @@
-"""Actualiza metadatos desde la transcripción revisada, sin perder coautores."""
-import json
-from pathlib import Path
+import os, json
+from pypdf import PdfReader
 
+CORRECCIONES = {
+    "13": {"titulo": "Artificial intelligence for education and its emphasis on assessment and adversity quotient: a review",
+        "autores": ["Jyoti Mudkanna Gavhane", "Reena Pagare"]},
+    "14": {"autores": ["Tamar Mikeladze", "Paulien C. Meijer", "Roald P. Verhoeff"]},
+}
 
-def main():
-    corpus = json.loads(Path('corpus.json').read_text(encoding='utf8'))
-    limites = json.loads(Path('datos/limites_pdf.json').read_text(encoding='utf8'))
-    por_id = {d['id']: d for d in limites}
-    for doc in corpus:
-        fuente = por_id[doc['id']]
-        doc['titulo'] = fuente['titulo']
-        doc['autores'] = fuente['autores']
-    Path('corpus.json').write_text(json.dumps(corpus, ensure_ascii=False, indent=2), encoding='utf8')
+def separar_autores(texto):
+    texto = texto.replace(" and ", ",")
+    return [a.strip() for a in texto.split(",") if a.strip()]
 
+with open("corpus.json", encoding="utf-8") as f:
+    corpus = json.load(f)
 
-if __name__ == '__main__':
-    main()
+for doc in corpus:
+    meta = PdfReader(os.path.join("pdfs", doc["archivo"])).metadata
+    doc["titulo"] = (meta.title or "").strip() if meta else ""
+    doc["autores"] = separar_autores(meta.author) if meta and meta.author else []
+    num = doc["archivo"].split(".")[0]
+    if num in CORRECCIONES:
+        doc.update(CORRECCIONES[num])
+    print(f'{doc["id"]:2} | {doc["titulo"][:60]:60s} | {", ".join(doc["autores"])[:40]}')
+
+with open("corpus.json", "w", encoding="utf-8") as f:
+    json.dump(corpus, f, ensure_ascii=False, indent=2)
+print("corpus.json actualizado con titulo y autores")

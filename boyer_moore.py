@@ -6,20 +6,12 @@ def tabla_mal_caracter(patron):
 
 
 def boyer_moore(texto, patron, traza=False):
-    return buscar_preparado(texto, patron, tabla_mal_caracter(patron), traza)
-
-
-def buscar_preparado(texto, patron, ultima, traza=False):
     n, m = len(texto), len(patron)
-    if m == 0 or m > n:
-        return [], 0
+    ultima = tabla_mal_caracter(patron)
     posiciones = []
     comparaciones = 0
     s = 0                               # desplazamiento del patrón sobre el texto
     while s <= n - m:
-        if traza:
-            print(texto)
-            print(' ' * s + patron + f'  (s={s})')
         j = m - 1                       # empezamos por el final del patrón
         while j >= 0:
             comparaciones += 1

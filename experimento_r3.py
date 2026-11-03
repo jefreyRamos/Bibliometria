@@ -1,25 +1,37 @@
-import csv
-import json
-from medicion import medir, BUSCADORES
-from datos_proyecto import huella
+import json, time, csv
+from Kmp import kmp
+from boyer_moore import boyer_moore
+from rabin_karp import rabin_karp
 
+def medir(f, texto, patron, repeticiones=5):
+    mejor = None
+    for _ in range(repeticiones):
+        t0 = time.perf_counter()
+        r = f(texto, patron)
+        t = time.perf_counter() - t0
+        if mejor is None or t < mejor:
+            mejor = t
+    return r, mejor
 
-def main():
-    corpus = json.load(open('corpus.json', encoding='utf8'))
-    base = ' '.join(d['abstract'].lower() for d in corpus)
-    filas = []
-    for factor in [1, 2, 4, 8]:
-        texto = (base + '\n') * factor
-        for patron in ['generative', 'large language models', 'artificial intelligence in education']:
-            for nombre in BUSCADORES:
-                r, preparacion, busqueda = medir(nombre, texto, patron)
-                filas.append([len(texto), len(patron), patron, nombre, len(r[0]), r[1], preparacion, busqueda, huella(corpus)])
-    with open('resultados_r3.csv', 'w', newline='', encoding='utf8') as f:
-        w = csv.writer(f)
-        w.writerow(['n','m','patron','algoritmo','encontradas','comparaciones','preparacion_ms','busqueda_ms','corpus_sha256'])
-        w.writerows(filas)
-    print('36 mediciones; mediana de 7 repeticiones; preparación y búsqueda separadas.')
+with open("corpus.json", encoding="utf-8") as f:
+    corpus = json.load(f)
+base = " ".join(a["abstract"].lower() for a in corpus)
+print("Caracteres del texto base:", len(base))
 
+patrones = ["generative", "large language models", "artificial intelligence in education"]
+algoritmos = [("KMP", kmp), ("Boyer-Moore", boyer_moore), ("Rabin-Karp", rabin_karp)]
+filas = []
+for factor in [1, 2, 4, 8]:
+    texto = base * factor
+    for patron in patrones:
+        for nombre, f in algoritmos:
+            r, t = medir(f, texto, patron)
+            filas.append([len(texto), len(patron), nombre, len(r[0]), r[1], round(t * 1000, 3)])
+            print(f"n={len(texto):7d} m={len(patron):2d} {nombre:12s} "
+                  f"encontradas={len(r[0]):4d} comparaciones={r[1]:7d} tiempo={t*1000:8.2f} ms")
 
-if __name__ == '__main__':
-    main()
+with open("resultados_r3.csv", "w", newline="", encoding="utf-8") as f:
+    w = csv.writer(f)
+    w.writerow(["n", "m", "algoritmo", "encontradas", "comparaciones", "tiempo_ms"])
+    w.writerows(filas)
+print("Guardado resultados_r3.csv")

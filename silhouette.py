@@ -3,6 +3,8 @@ from clustering import clustering_jerarquico
 
 def cortar(fusiones, N, k):
     """Repite las primeras N-k fusiones y devuelve el grupo de cada documento."""
+    if not 1 <= k <= N:
+        raise ValueError("k debe estar entre 1 y N")
     grupos = {i: [i] for i in range(N)}
     siguiente = N
     for a, b, d, t in fusiones[:N - k]:
@@ -35,7 +37,8 @@ def silhouette(D, etiquetas):
             b = min(b, sum(otro) / len(otro)) if b is not None else sum(otro) / len(otro) # si todavía no tengo b, tomo este promedio; si ya tengo, me quedo con el menor
         if b is None:                # no hay otro grupo: s(i) = 0
             continue
-        total += (b - a) / max(a, b)
+        if max(a, b) > 0:
+            total += (b - a) / max(a, b)
     if N == 0:
         return 0.0
     return total / N

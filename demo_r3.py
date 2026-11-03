@@ -12,10 +12,10 @@ with open("corpus.json", encoding="utf-8") as f:
     corpus = json.load(f)
 
 # Primer abstract que contiene el patrón y un fragmento corto alrededor de la primera aparición.
-# (el "in" y el find de aquí solo eligen el fragmento de la demo; la búsqueda la hacen los 3 algoritmos)
-doc = next(d for d in corpus if PATRON in d["abstract"].lower())
+# KMP también selecciona el fragmento de demostración.
+doc = next(d for d in corpus if kmp(d["abstract"].lower(), PATRON)[0])
 abstract = doc["abstract"].lower()
-inicio = max(0, abstract.find(PATRON) - 40)
+inicio = max(0, kmp(abstract, PATRON)[0][0] - 40)
 texto = abstract[inicio:inicio + 100]
 
 print(f"Artículo {doc['id']}: {doc['titulo']}")

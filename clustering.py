@@ -11,6 +11,8 @@ def distancia_clusters(A, B, D, criterio):
         return sum(distancias) / len(distancias)
 
 def clustering_jerarquico(D, criterio):
+    if criterio not in ("single", "complete", "average"):
+        raise ValueError("Criterio desconocido")
     N = len(D)
     clusters = {i: [i] for i in range(N)}   # id del grupo -> documentos
     siguiente_id = N

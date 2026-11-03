@@ -1,0 +1,2 @@
+gensim==4.4.0
+sentence-transformers==6.2.0

@@ -2,3 +2,6 @@
 __pycache__/
 .agents/
 .claude/
+.deps/
+.cache/
+tmp/

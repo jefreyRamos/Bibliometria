@@ -1,4 +1,4 @@
-streamlit
-matplotlib
-scipy
-pypdf
+streamlit==1.66.1
+matplotlib==3.11.2
+scipy==1.18.1
+pypdf==6.21.4

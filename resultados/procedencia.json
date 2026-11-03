@@ -1,0 +1,60 @@
+{
+  "corpus_sha256": "fb78daaca64f8412cbd5730f60a7253324dfa02826200fe3504e848c93a6566a",
+  "codigo_sha256": "46dda5b49e3bc038eef64f49b311645b47ea2ad6a2499257068402b252530871",
+  "sbert_modelo": "sentence-transformers/all-MiniLM-L6-v2",
+  "sbert_revision": null,
+  "sbert_max_seq_length": 256,
+  "sbert_longitudes_tokenizador": [
+    222,
+    156,
+    289,
+    268,
+    317,
+    207,
+    312,
+    279,
+    206,
+    275,
+    235,
+    364,
+    298,
+    213,
+    277,
+    196,
+    257,
+    281,
+    301,
+    260
+  ],
+  "sbert_articulos_truncados": [
+    3,
+    4,
+    5,
+    7,
+    8,
+    10,
+    12,
+    13,
+    15,
+    17,
+    18,
+    19,
+    20
+  ],
+  "word2vec": {
+    "dimensiones": 100,
+    "window": 5,
+    "epochs": 100,
+    "seed": 42,
+    "workers": 1,
+    "sg": 1,
+    "min_count": 1
+  },
+  "pythonhashseed": "0",
+  "versiones": {
+    "gensim": "4.4.0",
+    "sentence-transformers": "6.2.0",
+    "torch": "2.15.0",
+    "numpy": "2.5.4"
+  }
+}

@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import dendrogram
 from clustering import clustering_jerarquico
 
-with open("matrices.json", encoding="utf-8") as f:
-    matrices = json.load(f)
+from datos_proyecto import cargar_resultados
+corpus, matrices = cargar_resultados()
 S = matrices["sbert"]
 N = len(S)
 D = [[1 - S[i][j] for j in range(N)] for i in range(N)]

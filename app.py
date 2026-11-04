@@ -76,7 +76,11 @@ elif pagina == "R2 · Clustering":
     D = [[1 - S[i][j] for j in range(N)] for i in range(N)]
     fusiones = clustering_jerarquico(D, criterio)
     fig, ax = plt.subplots(figsize=(12, 5))
-    dendrogram(fusiones, labels=[str(i + 1) for i in range(N)], ax=ax)
+    corte = (fusiones[N - k - 1][2] + fusiones[N - k][2]) / 2
+    dendrogram(fusiones, labels=[str(i + 1) for i in range(N)], ax=ax,
+            color_threshold=corte, above_threshold_color="gray")
+    ax.axhline(corte, color="red", linestyle="--", linewidth=1, label=f"corte en k = {k}")
+    ax.legend()
     ax.set_ylabel("distancia = 1 - similitud")
     ax.set_title(f"{criterio} · {metodo}")
     st.pyplot(fig)
